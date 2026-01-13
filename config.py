@@ -12,7 +12,7 @@ TOKEN = os.getenv("DISCORD_TOKEN", "")
 TOKEN_2 = os.getenv("DISCORD_TOKEN_2", "")
 CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID", "")
 CHANNEL_ID_2 = os.getenv("DISCORD_CHANNEL_ID_2", "")
-API_URL = f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages?limit=1"
+API_URL = f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages?limit=2"
 API_URL_2 = f"https://discord.com/api/v9/channels/{CHANNEL_ID_2}/messages?limit=2"
 
 GENERAL_CHANNEL_TOKEN = os.getenv("GENERAL_CHANNEL_TOKEN", "")
