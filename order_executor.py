@@ -105,6 +105,29 @@ def send_webhook(
             else:
                 print(f"{operation_name} failed after all retries for {url}")
 
+def send_cancel_webhook(ticker: str, url: str):
+    if not url:
+        print(f"No URL provided for cancel webhook")
+        return
+    
+    cancel_payload = {
+        "ticker": ticker,
+        "action": "cancel"
+    }
+    
+    for attempt in range(5):
+        try:
+            webhook_response = requests.post(url, json=cancel_payload)
+            webhook_response.raise_for_status()
+            print(f"Cancel webhook sent successfully for {ticker} to {url} (attempt {attempt + 1})")
+            break
+        except Exception as e:
+            print(f"Error sending cancel webhook for {ticker} to {url} (attempt {attempt + 1}): {e}")
+            if attempt < 4:
+                time.sleep(1)
+            else:
+                print(f"Cancel webhook failed after all retries for {ticker} to {url}")
+
 def send_webhook_to_multiple_urls(
     payload: Dict,
     urls: Union[List[str], str],

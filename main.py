@@ -180,6 +180,8 @@ def handle_long_triggered_message(triggered_match, source="second_channel"):
         
         
         if webhook_qty > 0:
+            order_executor.send_cancel_webhook(ticker, config.WEBHOOK_URL)
+            
             webhook_payload = {
                 "ticker": ticker,
                 "price": str(price),
@@ -530,8 +532,16 @@ def check_last_message():
             
             order_direction = match.group(1).lower()
             long_value = match.group(2)
-            letter = match.group(3).upper()
-            stop_value = match.group(4)
+            
+            if match.group(3):
+                letter = match.group(3).upper()
+            elif match.group(4):
+                letter = 'R'
+            else:
+                print("Could not extract letter from message")
+                return
+            
+            stop_value = match.group(5)
             
             print(f"Retrieved values: ES {order_direction}: {long_value}, Letter: {letter}, Stop: {stop_value}")
             
@@ -550,8 +560,11 @@ def check_last_message():
             elif letter == 'C':
                 personal_qty = config.GLOBAL_QUANTITY
                 webhook_qty = 5
+            elif letter == 'R':
+                personal_qty = config.GLOBAL_QUANTITY
+                webhook_qty = config.GLOBAL_QUANTITY
             else:
-                print(f"Ignoring order with letter '{letter}' - only 'A', 'B', 'C' orders are processed")
+                print(f"Ignoring order with letter '{letter}' - only 'A', 'B', 'C', 'R' orders are processed")
                 return
             
             try:
@@ -579,6 +592,8 @@ def check_last_message():
                 print("Order saved locally")
                 
                 if webhook_qty > 0:
+                    order_executor.send_cancel_webhook(config.TICKER_SYMBOL, config.WEBHOOK_URL)
+                    
                     webhook_payload = {
                         "ticker": config.TICKER_SYMBOL,
                         "price": str(long_value),

@@ -12,7 +12,7 @@ def get_headers(token: str) -> Dict[str, str]:
 def fetch_last_message(channel_id: Optional[str] = None, token: Optional[str] = None) -> Optional[Dict[str, Any]]:
     token = token or config.TOKEN
     channel_id = channel_id or config.CHANNEL_ID
-    api_url = f"https://discord.com/api/v10/channels/{channel_id}/messages?limit=1"
+    api_url = f"https://discord.com/api/v10/channels/{channel_id}/messages?limit=2"
     
     try:
         response = requests.get(api_url, headers=get_headers(token))

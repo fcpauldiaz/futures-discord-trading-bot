@@ -23,7 +23,7 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
 ORDER_FILE = "open_order.json"
 
 PATTERN = re.compile(
-    r"ES (long|short) (\d+): ([A-Z])(?:\s+\w+)?\s*.*Stop: (\d+)", re.IGNORECASE | re.DOTALL
+    r"ES (long|short) (\d+):\s*(?:([A-Z])(?:\s+\w+)?|(roll(?:\s+w/\s+profits)?))\s*.*?Stop:\s*(?:\d+m\s+close\s+)?(\d+)", re.IGNORECASE | re.DOTALL
 )
 
 TRIM_PATTERN = re.compile(
